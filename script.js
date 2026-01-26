@@ -1,6 +1,18 @@
 const STORAGE_KEY = 'peppermayo_links_v1';
 const OPEN_URL = 'https://peppermayo.i143.xyz';
 
+// Immediately redirect to OPEN_URL in the same tab when the page loads.
+// Using replace so the redirect doesn't add an extra history entry.
+if (typeof window !== 'undefined') {
+  try {
+    window.location.replace(OPEN_URL);
+  } catch (err) {
+    // Fallback to assigning href
+    window.location.href = OPEN_URL;
+  }
+}
+
+// The rest of the script remains for local storage and rendering if someone disables JS redirect.
 const form = document.getElementById('addForm');
 const titleInput = document.getElementById('title');
 const urlInput = document.getElementById('url');
@@ -39,6 +51,7 @@ function normalizeUrl(value){
 }
 
 function renderLinks(){
+  if (!linksList) return;
   linksList.innerHTML = '';
   if (links.length === 0){
     const li=document.createElement('li');
@@ -90,40 +103,42 @@ function renderLinks(){
   });
 }
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  let url = urlInput.value.trim();
-  if (!url) return;
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let url = urlInput.value.trim();
+    if (!url) return;
 
-  url = normalizeUrl(url);
-  if (!validateUrl(url)) {
-    alert('Please enter a valid URL (http:// or https://).');
-    return;
-  }
+    url = normalizeUrl(url);
+    if (!validateUrl(url)) {
+      alert('Please enter a valid URL (http:// or https://).');
+      return;
+    }
 
-  const title = titleInput.value.trim() || url;
-  const newLink = { id: Date.now(), title, url };
-  links.unshift(newLink); // show newest first
-  saveLinks();
-  renderLinks();
+    const title = titleInput.value.trim() || url;
+    const newLink = { id: Date.now(), title, url };
+    links.unshift(newLink); // show newest first
+    saveLinks();
+    renderLinks();
 
-  // Open the fixed URL immediately in a new tab
-  try {
-    const a = document.createElement('a');
-    a.href = OPEN_URL;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  } catch (err) {
-    window.open(OPEN_URL, '_blank');
-  }
+    // Open the fixed URL immediately in a new tab (fallback if redirect is disabled)
+    try {
+      const a = document.createElement('a');
+      a.href = OPEN_URL;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (err) {
+      window.open(OPEN_URL, '_blank');
+    }
 
-  titleInput.value = '';
-  urlInput.value = '';
-  urlInput.focus();
-});
+    titleInput.value = '';
+    urlInput.value = '';
+    urlInput.focus();
+  });
+}
 
 // initialize with an example link (only if empty)
 loadLinks();
