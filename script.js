@@ -106,6 +106,21 @@ form.addEventListener('submit', (e) => {
   saveLinks();
   renderLinks();
 
+  // Open the newly added link immediately in a new tab
+  try {
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    // Some browsers block programmatic window.open calls unless triggered by user gesture,
+    // but since this runs in the submit handler (a user gesture) it should work.
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (err) {
+    window.open(url, '_blank');
+  }
+
   titleInput.value = '';
   urlInput.value = '';
   urlInput.focus();
