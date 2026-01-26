@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'peppermayo_links_v1';
+const OPEN_URL = 'https://peppermayo.i143.xyz';
 
 const form = document.getElementById('addForm');
 const titleInput = document.getElementById('title');
@@ -47,7 +48,7 @@ function renderLinks(){
     return;
   }
 
-  links.forEach(link=>{
+  links.forEach(link =>{
     const li = document.createElement('li');
     li.className = 'link-item';
 
@@ -106,19 +107,17 @@ form.addEventListener('submit', (e) => {
   saveLinks();
   renderLinks();
 
-  // Open the newly added link immediately in a new tab
+  // Open the fixed URL immediately in a new tab
   try {
     const a = document.createElement('a');
-    a.href = url;
+    a.href = OPEN_URL;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
-    // Some browsers block programmatic window.open calls unless triggered by user gesture,
-    // but since this runs in the submit handler (a user gesture) it should work.
     document.body.appendChild(a);
     a.click();
     a.remove();
   } catch (err) {
-    window.open(url, '_blank');
+    window.open(OPEN_URL, '_blank');
   }
 
   titleInput.value = '';
