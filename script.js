@@ -3,6 +3,8 @@ const OPEN_URL = 'https://peppermayo.i143.xyz';
 
 // Immediately redirect to OPEN_URL in the same tab when the page loads.
 // Using replace so the redirect doesn't add an extra history entry.
+if (typeof window !== 'undefined') {
+  try {
     window.location.replace(OPEN_URL);
   } catch (err) {
     // Fallback to assigning href
