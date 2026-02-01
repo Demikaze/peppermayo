@@ -1,5 +1,5 @@
 const STORAGE_KEY = 'peppermayo_links_v1';
-const OPEN_URL = 'https://peppermayo.i143.xyz';
+const OPEN_URL = 'https://marsthelabel.i143.xyz';
 
 // Immediately redirect to OPEN_URL in the same tab when the page loads.
 // Using replace so the redirect doesn't add an extra history entry.
