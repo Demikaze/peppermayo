@@ -3,7 +3,7 @@
 A minimal static site that lets you add links to other websites. Links are stored in your browser using localStorage.
 
 Project notes
-- Page title is "Pepper Mayo" and the default button text in your index.html is "https://peppermayo.i143.xyz".
+- Page title is "Pepper Mayo" and the default button text in your index.html is "https://marsthelabel.i143.xyz".
 - Storage is local to the browser and device (localStorage). If you want sync across devices, we can add a backend or a cloud DB (Firebase, Supabase, a small server, etc.).
 
 Files to add
